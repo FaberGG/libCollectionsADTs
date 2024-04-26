@@ -103,7 +103,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgADT
         }
         public bool opItsOrderedAscending()
         {
-            attLength = prmArray.Length;
+            int attLength = prmArray.Length;
             for (int i = 1; i < attLength; i++)
             {
                 if (prmArray[i].CompareTo(prmArray[i - 1]) <= 0)
@@ -117,7 +117,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgADT
         }
         public bool opItsOrderedDescending()
         {
-            attLength = prmArray.Length;
+            int attLength = prmArray.Length;
             for (int i = 1; i < attLength; i++)
             {
                 if (prmArray[i].CompareTo(prmArray[i - 1]) >= 0)

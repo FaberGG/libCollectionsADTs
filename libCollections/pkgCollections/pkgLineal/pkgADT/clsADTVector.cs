@@ -23,12 +23,20 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         {
             try
             {
-                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity() - 1)
+                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity())
                 {
                     throw new ArgumentException("La capacidad proporcionada no es válida.");
                 }
 
-                if (prmCapacity == attMaxCapacity) attGrowingFactor = 0;
+                if (prmCapacity == attMaxCapacity)
+                {
+                    attGrowingFactor = 0;
+                }
+                else
+                {
+                    attGrowingFactor = 1; // Establecer el valor predeterminado si no hay excepción
+                }
+
                 attTotalCapacity = prmCapacity;
                 attItems = new T[prmCapacity];
             }
@@ -40,9 +48,10 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
                 attTotalCapacity = 100;
                 attItems = new T[100];
                 attItsFlexible = false;
-                if (prmCapacity > opGetMaxCapacity() - 1) attGrowingFactor = 100;
+                attGrowingFactor = 100; // Establecer el factor de crecimiento en caso de excepción
             }
         }
+
         #endregion
         #region Getters
         public int opGetTotalCapacity()
@@ -62,13 +71,8 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         }
         public int opGetAvailableCapacity()
         {
-            int attLength = attItems.Length;
-            int attItemsCount = 0;
-            for (int i = 0; i<attLength; i++)
-            {
-                if (attItems[i] != null) attItemsCount++;
-            }
-            return attLength - attItemsCount;
+            
+            return attTotalCapacity - attLength;
         }
         public static int opGetMaxCapacity()
         {
@@ -137,7 +141,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         {
             attItems = prmArray;
             attTotalCapacity = prmArray.Length;
-            attLength = prmItemsCount;
+            base.attLength = prmItemsCount;
             return true;
         }
         #endregion

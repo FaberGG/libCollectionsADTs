@@ -12,7 +12,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
             try
             {
                 if (attLength < 0) attLength = 0;
-                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity() - 1)
+                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity())
                 {
                     throw new ArgumentException("La capacidad proporcionada no es válida.");
                 }
@@ -36,7 +36,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
             attItems = new T[attTotalCapacity]; // Inicializar la matriz de elementos con la capacidad total
             attLength = 0; // La longitud inicial debe ser 0 ya que la pila está vacía
             attItsFlexible = false; // La pila no es flexible por defecto
-            attGrowingFactor = 1; // Factor de crecimiento predeterminado
+            attGrowingFactor = 100; // Factor de crecimiento predeterminado
         }
 
         #endregion
@@ -58,8 +58,28 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
 
         public bool opPop(ref T prmItem)
         {
-            throw new NotImplementedException();
+            // Verificar si la pila está vacía antes de intentar sacar un elemento
+            if (attLength > 0)
+            {
+                prmItem = attItems[0]; // Obtener el elemento superior
+
+                // Desplazar los elementos restantes para que el elemento superior esté en el índice 0
+                for (int i = 1; i < attItems.Length; i++)
+                {
+                    attItems[i - 1] = attItems[i];
+                }
+
+
+                attLength--; // Reducir la longitud de la pila
+                return true; // Indicar que se pudo hacer el pop correctamente
+            }
+            else
+            {
+                prmItem = default; // No hay elementos para sacar, asignar el valor por defecto de T a prmItem
+                return false; // Indicar que no se pudo hacer el pop porque la pila está vacía
+            }
         }
+
 
         public bool opPush(T prmItem)
         {
