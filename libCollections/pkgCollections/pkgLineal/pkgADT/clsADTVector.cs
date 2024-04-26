@@ -11,7 +11,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         protected static int attMaxCapacity = int.MaxValue / 16;
         protected T[] attItems = new T[100];
         protected bool attItsFlexible = false;
-        protected int attGrowingFactor = 100;
+        protected int attGrowingFactor = 1;
         #endregion
         #region Operations
         #region Builders
@@ -23,6 +23,11 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         {
             try
             {
+                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity() - 1)
+                {
+                    throw new ArgumentException("La capacidad proporcionada no es válida.");
+                }
+
                 if (prmCapacity == attMaxCapacity) attGrowingFactor = 0;
                 attTotalCapacity = prmCapacity;
                 attItems = new T[prmCapacity];
@@ -35,9 +40,8 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
                 attTotalCapacity = 100;
                 attItems = new T[100];
                 attItsFlexible = false;
-                attGrowingFactor = 100;
+                if (prmCapacity > opGetMaxCapacity() - 1) attGrowingFactor = 100;
             }
-
         }
         #endregion
         #region Getters

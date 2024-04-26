@@ -12,6 +12,13 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
             try
             {
                 if (attLength < 0) attLength = 0;
+                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity() - 1)
+                {
+                    throw new ArgumentException("La capacidad proporcionada no es válida.");
+                }
+
+                if (prmCapacity == attMaxCapacity) attGrowingFactor = 0;
+                attTotalCapacity = prmCapacity;
                 attItems = new T[prmCapacity];
             }
             catch
@@ -20,7 +27,6 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
                 attMaxCapacity = int.MaxValue / 16;
                 attItems = new T[100];
                 attItsFlexible = false;
-                attGrowingFactor = 100;
             }
         }
         public clsVectorStack()
@@ -30,7 +36,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
             attItems = new T[attTotalCapacity]; // Inicializar la matriz de elementos con la capacidad total
             attLength = 0; // La longitud inicial debe ser 0 ya que la pila está vacía
             attItsFlexible = false; // La pila no es flexible por defecto
-            attGrowingFactor = 100; // Factor de crecimiento predeterminado
+            attGrowingFactor = 1; // Factor de crecimiento predeterminado
         }
 
         #endregion
