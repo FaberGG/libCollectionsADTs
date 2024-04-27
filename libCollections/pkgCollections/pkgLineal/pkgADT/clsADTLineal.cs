@@ -103,33 +103,49 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgADT
         }
         public bool opItsOrderedAscending()
         {
-            int attLength = prmArray.Length;
-            for (int i = 1; i < attLength; i++)
-            {
-                if (prmArray[i].CompareTo(prmArray[i - 1]) <= 0)
-                {
-                    attItsOrderedDescending = false;
-                    return attItsOrderedDescending;
-                }
-            }
-            attItsOrderedDescending = true;
-            return attItsOrderedDescending;
+            //if (attLength <= 1)
+            //{
+            //    attItsOrderedAscending = false;
+            //    return attItsOrderedAscending;
+            //}
+
+            //for (int i = 1; i < attLength; i++)
+            //{
+            //    if (prmArray[i].CompareTo(prmArray[i - 1]) < 0)
+            //    {
+            //        // Si encuentra un elemento menor que el anterior, no está ordenado ascendente
+            //        attItsOrderedAscending = false;
+            //        return attItsOrderedAscending;
+            //    }
+            //}
+            //// Si llega aquí y la longitud es mayor que uno, todos los elementos están en orden ascendente
+            //attItsOrderedAscending = true;
+            return attItsOrderedAscending;
         }
+
         public bool opItsOrderedDescending()
         {
-            int attLength = prmArray.Length;
-            for (int i = 1; i < attLength; i++)
-            {
-                if (prmArray[i].CompareTo(prmArray[i - 1]) >= 0)
-                {
-                    attItsOrderedDescending = false;
-                    return attItsOrderedDescending;
-                }
-            }
-            attItsOrderedDescending = true;
+            //if (attLength <= 1)
+            //{
+            //    attItsOrderedDescending = false; 
+            //    return attItsOrderedDescending;
+            //}
+
+            //for (int i = 1; i < attLength; i++)
+            //{
+            //    if (prmArray[i].CompareTo(prmArray[i - 1]) > 0)
+            //    {
+            //        // Si encuentra un elemento mayor que el anterior, no está ordenado descendente
+            //        attItsOrderedDescending = false;
+            //        return attItsOrderedDescending;
+            //    }
+            //}
+            //// Si llega aquí y la longitud es mayor que uno, todos los elementos están en orden descendente
+            //attItsOrderedDescending = true;
             return attItsOrderedDescending;
         }
-        public bool opItsValid()
+    
+    public bool opItsValid()
         {
             throw new NotImplementedException();
         }

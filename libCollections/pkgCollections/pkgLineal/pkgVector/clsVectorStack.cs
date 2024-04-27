@@ -9,34 +9,10 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
         public clsVectorStack(int prmCapacity) : base(prmCapacity)
         {
             
-            try
-            {
-                if (attLength < 0) attLength = 0;
-                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity())
-                {
-                    throw new ArgumentException("La capacidad proporcionada no es válida.");
-                }
-
-                if (prmCapacity == attMaxCapacity) attGrowingFactor = 0;
-                attTotalCapacity = prmCapacity;
-                attItems = new T[prmCapacity];
-            }
-            catch
-            {
-                attTotalCapacity = 100;
-                attMaxCapacity = int.MaxValue / 16;
-                attItems = new T[100];
-                attItsFlexible = false;
-            }
         }
-        public clsVectorStack()
+        public clsVectorStack(): base()
         {
-            attTotalCapacity = 100; // Capacidad total predeterminada
-            attMaxCapacity = int.MaxValue / 16; // Capacidad máxima predeterminada
-            attItems = new T[attTotalCapacity]; // Inicializar la matriz de elementos con la capacidad total
-            attLength = 0; // La longitud inicial debe ser 0 ya que la pila está vacía
-            attItsFlexible = false; // La pila no es flexible por defecto
-            attGrowingFactor = 100; // Factor de crecimiento predeterminado
+
         }
 
         #endregion
@@ -83,20 +59,71 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
 
         public bool opPush(T prmItem)
         {
-            // Verificar si la pila está llena antes de intentar agregar un nuevo elemento
-            if (attLength >= attTotalCapacity)
+            // Verificar si la pila está llena y no es flexible
+            if (attLength >= attTotalCapacity && !attItsFlexible)
             {
-                // Si la pila está llena y no es flexible, no se debe agregar el elemento y se debe retornar false
+                // No se puede agregar el elemento y se debe retornar false
                 return false;
             }
             else
             {
-                // Si la pila no está llena, agregar el elemento y aumentar attLength
-                attItems[attLength] = prmItem;
-                attLength++;
-                return true;
+                try
+                {
+                    // Crear un nuevo arreglo temporal solo si no hay suficiente espacio y la pila es flexible
+                    if (attLength >= attTotalCapacity && attItsFlexible)
+                    {
+                        
+                        if(attLength == attMaxCapacity - 1)
+                        {
+                            T[] tempArray = new T[attMaxCapacity];
+                            tempArray[0] = prmItem;
+                            attItems = tempArray;
+                            attItsFlexible = false; // ya no soporta otro item mas
+                            attGrowingFactor = 0;
+                        }
+                        else
+                        {
+                            T[] tempArray = new T[attLength + 100];
+
+                            // Copiar los elementos existentes al nuevo arreglo temporal
+                            for (int i = 0; i < attLength; i++)
+                            {
+                                tempArray[i + 1] = attItems[i]; // Desplazar los elementos hacia abajo
+                            }
+
+                            // Agregar el nuevo elemento en la posición superior (posición 0) del nuevo arreglo
+                            tempArray[0] = prmItem;
+
+                            // Asignar el nuevo arreglo temporal al arreglo original
+                            attItems = tempArray;
+                        }
+                        // Actualizar la capacidad total
+                        attTotalCapacity = attItems.Length;
+                    }
+                    else
+                    {
+                        // Agregar el nuevo elemento en la posición superior (posición 0) del arreglo original
+                        for (int i = attLength - 1; i >= 0; i--)
+                        {
+                            attItems[i + 1] = attItems[i]; // Desplazar los elementos hacia abajo
+                        }
+                        attItems[0] = prmItem; // Agregar el nuevo elemento en la posición superior
+                                          
+                    }
+                    // Incrementar la longitud de la pila
+                    attLength++;
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    // Manejar cualquier excepción y retornar false indicando que no se pudo agregar el elemento
+                    return false;
+                }
             }
         }
+
+
 
         #endregion
     }

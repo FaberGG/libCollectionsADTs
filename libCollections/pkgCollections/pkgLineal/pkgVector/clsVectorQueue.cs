@@ -7,15 +7,13 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
     public class clsVectorQueue<T> : clsADTVector<T>, iQueue<T> where T : IComparable<T>
     {
         #region Attributes
-        //protected T[] attItems = new T[100];
         #region Builders
-        public clsVectorQueue()
+        public clsVectorQueue(): base()
         {
 
         }
-        public clsVectorQueue(int prmCapacity)
+        public clsVectorQueue(int prmCapacity): base(prmCapacity)
         {
-            attItems = new T[prmCapacity];
         }
         #endregion
         #endregion

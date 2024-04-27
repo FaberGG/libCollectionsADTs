@@ -17,13 +17,20 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         #region Builders
         protected clsADTVector()
         {
-
+            attTotalCapacity = 100; // Capacidad total predeterminada
+            attMaxCapacity = int.MaxValue / 16; // Capacidad máxima predeterminada
+            attItems = new T[attTotalCapacity]; // Inicializar la matriz de elementos con la capacidad total
+            attLength = 0; // La longitud inicial debe ser 0 ya que la pila está vacía
+            attItsFlexible = false; // La pila no es flexible por defecto
+            attGrowingFactor = 100; // Factor de crecimiento predeterminado
         }
         protected clsADTVector(int prmCapacity)
         {
             try
             {
-                if (prmCapacity < 0 || prmCapacity > opGetMaxCapacity())
+                if (attLength < 0) attLength = 0; 
+
+                if (prmCapacity <= 0 || prmCapacity > opGetMaxCapacity())
                 {
                     throw new ArgumentException("La capacidad proporcionada no es válida.");
                 }
@@ -32,13 +39,14 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
                 {
                     attGrowingFactor = 0;
                 }
-                else
+                else if( prmCapacity == attMaxCapacity -1)
                 {
                     attGrowingFactor = 1; // Establecer el valor predeterminado si no hay excepción
                 }
 
                 attTotalCapacity = prmCapacity;
                 attItems = new T[prmCapacity];
+                attGrowingFactor = 100;
             }
             catch (Exception e)
             {
@@ -60,18 +68,12 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         }
         public int opGetGrowingFactor()
         {
-            if (attItsFlexible)
-            {
-                return attMaxCapacity / attTotalCapacity;
-            }
-            else
-            {
-                return attGrowingFactor;
-            }
+            
+            return attGrowingFactor;
+            
         }
         public int opGetAvailableCapacity()
         {
-            
             return attTotalCapacity - attLength;
         }
         public static int opGetMaxCapacity()
@@ -108,14 +110,7 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector.pkgADT
         }
         public bool opItsFlexible()
         {
-            if (typeof(T).GetInterface(nameof(ICollection<T>)) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return attItsFlexible;
         }
         #endregion
         #region Serialize/Deserialize

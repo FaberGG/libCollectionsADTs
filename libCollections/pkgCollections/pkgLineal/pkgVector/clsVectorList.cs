@@ -10,14 +10,14 @@ namespace pkgServices.pkgCollections.pkgLineal.pkgVector
         //protected T[] attItems = new T[100]; 
         #endregion
         #region Builders
-        public clsVectorList()
+        public clsVectorList(): base()
         {
 
         }
-        public clsVectorList(int prmCapacity)
+        public clsVectorList(int prmCapacity): base(prmCapacity)
         {
-            attItems = new T[prmCapacity];
-        } 
+            
+        }
         #endregion
         #region CRUDs
         public bool opAdd(T prmItem)
